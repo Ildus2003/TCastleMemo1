@@ -126,7 +126,7 @@ BottomText:Single;
 
     { Currently input text. }
     property Text: Tstrings read FText write SetText;
-    property CountRow:integer read FCountRow write SetCountRow default 1;
+    property CountRow:integer read Text.Count write Text.Count default 1;
     { Inside the box rectangle, padding between the borders (or frame, if @link(Frame)) and text.
       Total horizontal padding is the sum @code(PaddingHorizontal + Padding),
       total vertical padding is the sum @code(PaddingVertical + Padding).
