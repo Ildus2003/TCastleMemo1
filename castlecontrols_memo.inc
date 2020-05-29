@@ -34,7 +34,6 @@
   strict private
     FIndex:integer;
     FIndexColumn:integer;
-    FCountRow:integer;
 BottomText:Single;
     FPasswordChar: Char;
     FText: Tstrings;
@@ -53,6 +52,7 @@ BottomText:Single;
     FOnChange: TNotifyEvent;
     FTextTranslate, FPlaceholderTranslate: Boolean;
     FBolScroll:Boolean;
+    function GetCountRow: integer;
     procedure SetIndex(Value:integer);
     procedure SetIndexColumn(Value:integer);
     procedure SetCountRow(Value:integer);
@@ -126,7 +126,7 @@ BottomText:Single;
 
     { Currently input text. }
     property Text: Tstrings read FText write SetText;
-    property CountRow:integer read FCountRow write SetCountRow default 1;
+    property CountRow:integer read GetCountRow write SetCountRow default 1;
     { Inside the box rectangle, padding between the borders (or frame, if @link(Frame)) and text.
       Total horizontal padding is the sum @code(PaddingHorizontal + Padding),
       total vertical padding is the sum @code(PaddingVertical + Padding).
@@ -199,6 +199,7 @@ begin
     ScrollBar.OnChange:=@OnScrollChange;
     ScrollBar.ActiveKeyHomeEnd:=False;
     ScrollBar.ActiveCtrlHomeEnd:=True;
+    ScrollBar.Exists:=False;
   FIndex:=0;
   FIndexColumn:=-1;
   FFocusedColor := Black;
@@ -214,7 +215,6 @@ begin
   FAutoSizeHeight := false;
   FTextTranslate := true;
   FPlaceholderTranslate := true;
-  CountRow:=1;
   FText:=TStringList.Create;
   Index:=FText.Add('');
   FBolScroll:=False;
@@ -244,10 +244,17 @@ begin
   end;
 if IndexColumn>Length(Text[Index])-2 then IndexColumn:=Length(Text[Index])-2;
 FBolScroll:=True;
+if ScrollBar.Exists=False then
+ScrollBar.Exists:=True;
 if ScrollBar.CompleteSize<>(Text.Count)-(Height/i) then
   ScrollBar.CompleteSize:=(Text.Count)-(Height/i);
   ScrollBar.Scroll:=Index;
   FBolScroll:=False;
+end;
+
+function TCastleMemo.GetCountRow: integer;
+begin
+   Result:=Text.Count;
 end;
 
 procedure TCastleMemo.SetIndexColumn(Value: integer);
@@ -259,12 +266,22 @@ begin
 end;
 
 procedure TCastleMemo.SetCountRow(Value: integer);
+var
+  i:integer;
+  S1:TStringList;
 begin
   if Value>0 then
   begin
-  FCountRow:=Value;
+  s1:=TStringList.Create;
+  for i:=0 to Value-1 do
+  if Value<Text.Count then
+    S1.Add(Text[i]) else s1.Add('');
+Text.Clear;
+Text.AddText(S1.Text);
+s1.Free;
   end;
 end;
+
 
 procedure TCastleMemo.SetText(const Value: TStrings);
 begin
