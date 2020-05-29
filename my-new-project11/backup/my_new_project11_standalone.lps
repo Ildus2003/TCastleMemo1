@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="11"/>
+    <Units Count="3">
+      <Unit0>
+        <Filename Value="my_new_project11_standalone.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <TopLine Value="10"/>
+        <CursorPos X="64" Y="16"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="gameinitialize.pas"/>
+        <UnitName Value="GameInitialize"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="5"/>
+        <CursorPos X="4" Y="19"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="gamestatemain.pas"/>
+        <UnitName Value="GameStateMain"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="33"/>
+        <CursorPos X="18" Y="46"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit2>
+    </Units>
+    <JumpHistory Count="3" HistoryIndex="2">
+      <Position1>
+        <Filename Value="my_new_project11_standalone.lpr"/>
+        <Caret Line="16" Column="64" TopLine="10"/>
+      </Position1>
+      <Position2>
+        <Filename Value="gameinitialize.pas"/>
+        <Caret Line="19" Column="4" TopLine="5"/>
+      </Position2>
+      <Position3>
+        <Filename Value="gamestatemain.pas"/>
+        <Caret Line="25" Column="8" TopLine="25"/>
+      </Position3>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes Count="0" ActiveMode="default"/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>
