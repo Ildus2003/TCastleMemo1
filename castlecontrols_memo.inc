@@ -639,7 +639,6 @@ begin
     else
   if Event.IsKey(K_Enter) then
   begin
-    CountRow:=CountRow+1;
     Text.Insert(Index+1,UTF8Copy(Text[Index],IndexColumn+2,Length(Text[index])-IndexColumn+1));
     s:=Text[index];
     Delete(s,IndexColumn+2,Length(Text[index])-IndexColumn+1);
