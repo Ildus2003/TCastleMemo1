@@ -223,6 +223,8 @@ end;
 destructor TCastleMemo.Destroy;
 begin
   FreeAndNil(Scissor);
+  FreeAndNil(ScrollBar);
+  Text.Free;
   inherited;
 end;
 
@@ -244,8 +246,6 @@ begin
   end;
 if IndexColumn>Length(Text[Index])-2 then IndexColumn:=Length(Text[Index])-2;
 FBolScroll:=True;
-if ScrollBar.Exists=False then
-ScrollBar.Exists:=True;
 if ScrollBar.CompleteSize<>(Text.Count)-(Height/i) then
   ScrollBar.CompleteSize:=(Text.Count)-(Height/i);
   ScrollBar.Scroll:=Index;
@@ -279,6 +279,8 @@ begin
 Text.Clear;
 Text.AddText(S1.Text);
 s1.Free;
+if Value>1 then
+     ScrollBar.Exists:=True else ScrollBar.Exists:=False;
   end;
 end;
 
@@ -494,18 +496,14 @@ begin
   for i:=0 to Text.Count -1 do
   begin
     S :=Text[i];
+    S:=UTF8Copy(s,0,5);
     if Focused then
     begin
     if i=Index then
-
       CaretShift := Font.TextWidth(Copy(s,0,IndexColumn+1));
       Color := FocusedColor
     end else
-    begin
       Color := UnfocusedColor;
-      { CaretShift doesn't matter in this case,
-        so we don't have to calculate TextWidth, saving a small time. }
-    end;
      S :=UTF8Copy(s,0,IndexColumn+1)+S;
   Scissor.Rect := RectInside.Round;
   Scissor.Enabled := true;
@@ -541,6 +539,7 @@ end;
 function TCastleMemo.Press(const Event: TInputPressRelease): boolean;
 var
   s:string;
+  i:integer;
 begin
   Result := inherited;
   if Result or (not GetExists) then Exit;
@@ -550,16 +549,17 @@ begin
       s:=Text[index];
       if s<>'' then
       begin
-      Delete(s,indexColumn+1,1);
-      Text[index]:=s;
-      IndexColumn:=IndexColumn-1;
+
+      Delete(s,indexColumn+1-UTF8Length(Text[index][IndexColumn]),UTF8Length(Text[index][IndexColumn]));
+      IndexColumn:=IndexColumn-UTF8Length(Text[index][IndexColumn]);
+      Text[index]:=s+Text[index][IndexColumn];
 
       end else if Index>0 then
       Text.Delete(index);
 
       begin
       Index:=Index-1;
-       IndexColumn:=Length(Text[Index])-1;
+       IndexColumn:=IndexColumn-UTF8Length(Text[index][IndexColumn]);
        end;
       DoChange;
     Result := ExclusiveEvents;
@@ -569,7 +569,7 @@ begin
       s:=Text[index];
       if s<>'' then
           begin
-      Delete(s,indexColumn+2,1);
+      Delete(s,indexColumn+1,Length(Text[Index][IndexColumn+1]));
       Text[index]:=s;
       end else  if Index<Text.Count-1 then
       begin
@@ -614,10 +614,10 @@ begin
     end
   else
   if Event.IsKey(keyLeft) then
-  IndexColumn:=indexColumn-1
+  IndexColumn:=indexColumn-Length(Text[Index][IndexColumn-1])
   else
     if Event.IsKey(keyRight) then
-  IndexColumn:=IndexColumn+1
+  IndexColumn:=IndexColumn+Length(Text[Index][IndexColumn+1])
   else
     if Event.IsKey(keyHome) and (mkCtrl  in Event.ModifiersDown) then
     begin
@@ -639,11 +639,12 @@ begin
     else
   if Event.IsKey(K_Enter) then
   begin
-    Text.Insert(Index+1,UTF8Copy(Text[Index],IndexColumn+2,Length(Text[index])-IndexColumn+1));
+  i:=UTF8Length(UTF8Copy(Text[index],IndexColumn,UTF8Length(text[index])-IndexColumn));
+    Text.Insert(Index+1,UTF8Copy(Text[index],IndexColumn,Length(text[index])-IndexColumn));   //UTF8Copy(Text[Index],IndexColumn+2,Length(Text[index])-IndexColumn+Length(Text[Index][Length(Text[Index])])));
     s:=Text[index];
-    Delete(s,IndexColumn+2,Length(Text[index])-IndexColumn+1);
+    Delete(s,IndexColumn+2,utf8Length(Text[index])-IndexColumn+1);
     Text[index]:=s;
-    Index:=Index+1;
+    Index:=Index+i;
     IndexColumn:=-1;
     DoChange;
   end
@@ -658,7 +659,9 @@ begin
        Note: The range CtrlA..CtrlZ includes CharEnter. }
      (not (Event.KeyCharacter in [CtrlA..CtrlZ, CharEscape])) then
   begin
-    Text[Index]:=Text[Index].Insert(IndexColumn+1,Event.KeyString);
+    s:=Text[index];
+    Insert(Event.KeyString,s,IndexColumn+1);
+    Text[index]:=s;
     IndexColumn:=IndexColumn+1;
     DoChange;
     Result := ExclusiveEvents;
