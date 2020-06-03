@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="my-new-project11"
+  standalone_source="my_new_project11_standalone.lpr"
+  game_units="GameInitialize"
+  qualified_name="com.mycompany.mynewproject11"
+>
+</project>

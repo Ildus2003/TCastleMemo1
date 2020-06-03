@@ -18,7 +18,6 @@ type
   { Main user interface class.
     This implements the majority of this application functionality. }
   TStateMain = class(TUIState)
-    Edit:TCastleEdit;
     Memo:TCastleMemo;
   private
   public
@@ -42,11 +41,6 @@ var
   UiOwner: TComponent;
 begin
   inherited;
-  Edit:=TCastleEdit.Create(Application);
-  Edit.Text:='ggg';
-  Edit.Anchor(vpMiddle);
-   Edit.Anchor(hpMiddle);
-   InsertFront(Edit);
  Memo:=TCastleMemo.Create(Application);
  Memo.Anchor(vpMiddle);
   Memo.Anchor(hpMiddle);

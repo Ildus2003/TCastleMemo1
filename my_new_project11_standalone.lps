@@ -15,19 +15,19 @@
       <Unit1>
         <Filename Value="gameinitialize.pas"/>
         <UnitName Value="GameInitialize"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <TopLine Value="38"/>
-        <CursorPos X="4" Y="19"/>
+        <CursorPos X="56" Y="42"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="gamestatemain.pas"/>
         <UnitName Value="GameStateMain"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="42"/>
-        <CursorPos X="63" Y="55"/>
+        <TopLine Value="48"/>
+        <CursorPos X="21" Y="52"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
       </Unit2>
